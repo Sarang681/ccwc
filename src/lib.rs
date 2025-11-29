@@ -7,17 +7,26 @@ use std::{
 use clap::{Parser, arg};
 
 #[derive(Parser)]
-#[command(name = "ccwc", version = "1.0", about = "WC in Rust", long_about = None)]
+#[command(
+    name = "ccwc",
+    version = "1.0",
+    about = "WC in Rust",
+    long_about = "Command-line argument parser for the `ccwc` tool, a Rust implementation of WC (word count)."
+)]
 pub struct Args {
+    /// Display the byte count
     #[arg(short = 'c', long = "bytes")]
     pub should_display_bytes: bool,
+    /// Display the character count
     #[arg(short = 'm', long = "chars")]
     pub should_display_chars: bool,
+    /// Display the line count
     #[arg(short = 'l', long = "lines")]
     pub should_display_lines: bool,
+    /// Display the word count
     #[arg(short = 'w', long = "words")]
     pub should_display_words: bool,
-
+    /// Optional path to the input file; reads from stdin if not provided
     pub file_path: Option<PathBuf>,
 }
 
