@@ -1,3 +1,8 @@
+use ccwc::Args;
+use clap::Parser;
+
 fn main() {
-    println!("Hello, world!");
+    let args = Args::parse();
+
+    println!("{:?}", args.should_display_bytes);
 }
