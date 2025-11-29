@@ -1,4 +1,8 @@
-use std::{fs, path::PathBuf};
+use std::{
+    fs,
+    io::{Read, stdin},
+    path::PathBuf,
+};
 
 use clap::{Parser, arg};
 
@@ -14,7 +18,7 @@ pub struct Args {
     #[arg(short = 'w', long = "words")]
     pub should_display_words: bool,
 
-    pub file_path: PathBuf,
+    pub file_path: Option<PathBuf>,
 }
 
 struct Count {
@@ -63,8 +67,15 @@ impl Count {
 
 impl Args {
     pub fn execute(&self) {
-        let file_contents = fs::read_to_string(&self.file_path).unwrap();
-        let file_name = self.file_path.file_name().unwrap().to_str().unwrap();
+        let file_contents: String;
+        let file_name: &str;
+        if let Some(file_path) = &self.file_path {
+            file_contents = fs::read_to_string(file_path).unwrap();
+            file_name = file_path.file_name().unwrap().to_str().unwrap();
+        } else {
+            file_name = "";
+            file_contents = read_from_stdin();
+        }
         let mut result = Count::new();
 
         if self.should_display_bytes {
@@ -98,6 +109,14 @@ impl Args {
 
         println!("{} {}", result.to_string(), file_name);
     }
+}
+
+fn read_from_stdin() -> String {
+    let mut buffer = String::new();
+    stdin()
+        .read_to_string(&mut buffer)
+        .expect("Failed to read input from standard input");
+    buffer
 }
 
 fn fetch_char_count(file_contents: &str) -> usize {
