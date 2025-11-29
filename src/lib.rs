@@ -40,6 +40,12 @@ impl Args {
             result.push_str(&words_vec.len().to_string());
         }
 
+        if self.should_display_chars {
+            add_whitespace_if_not_empty(&mut result);
+            let chars_vec: &Vec<char> = &file_contents.chars().collect();
+            result.push_str(&chars_vec.len().to_string());
+        }
+
         println!("{} {}", result, file_name);
     }
 }
