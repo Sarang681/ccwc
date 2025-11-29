@@ -40,21 +40,23 @@ impl Count {
 
     fn to_string(&self) -> String {
         let mut result = String::new();
+        if let Some(line_count) = self.lines {
+            add_whitespace_if_not_empty(&mut result);
+            result.push_str(&line_count.to_string());
+        }
+        if let Some(word_count) = self.words {
+            add_whitespace_if_not_empty(&mut result);
+            result.push_str(&word_count.to_string());
+        }
         if let Some(byte_count) = self.bytes {
+            add_whitespace_if_not_empty(&mut result);
             result.push_str(&byte_count.to_string());
         }
         if let Some(char_count) = self.chars {
             add_whitespace_if_not_empty(&mut result);
             result.push_str(&char_count.to_string());
         }
-        if let Some(word_count) = self.words {
-            add_whitespace_if_not_empty(&mut result);
-            result.push_str(&word_count.to_string());
-        }
-        if let Some(line_count) = self.lines {
-            add_whitespace_if_not_empty(&mut result);
-            result.push_str(&line_count.to_string());
-        }
+
         result
     }
 }
@@ -87,8 +89,8 @@ impl Args {
 
         if result.is_empty() {
             result = Count {
-                bytes: None,
-                chars: Some(fetch_char_count(&file_contents)),
+                bytes: Some(fetch_byte_count(&file_contents)),
+                chars: None,
                 lines: Some(fetch_line_count(&file_contents)),
                 words: Some(fetch_word_count(&file_contents)),
             };
