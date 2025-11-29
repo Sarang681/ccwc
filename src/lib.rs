@@ -24,9 +24,22 @@ impl Args {
         let mut result = String::new();
 
         if self.should_display_bytes {
+            add_whitespace_if_not_empty(&mut result);
             result.push_str(&file_contents.as_bytes().len().to_string());
         }
 
+        if self.should_display_lines {
+            add_whitespace_if_not_empty(&mut result);
+            let lines_vec: &Vec<&str> = &file_contents.lines().collect();
+            result.push_str(&lines_vec.len().to_string());
+        }
+
         println!("{} {}", result, file_name);
+    }
+}
+
+fn add_whitespace_if_not_empty(result: &mut String) {
+    if !result.is_empty() {
+        result.push_str(" ");
     }
 }
