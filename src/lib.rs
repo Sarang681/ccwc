@@ -34,6 +34,12 @@ impl Args {
             result.push_str(&lines_vec.len().to_string());
         }
 
+        if self.should_display_words {
+            add_whitespace_if_not_empty(&mut result);
+            let words_vec: &Vec<&str> = &file_contents.split_whitespace().collect();
+            result.push_str(&words_vec.len().to_string());
+        }
+
         println!("{} {}", result, file_name);
     }
 }
